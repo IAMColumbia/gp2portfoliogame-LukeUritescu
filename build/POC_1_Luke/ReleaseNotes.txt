@@ -1,0 +1,10 @@
+Release Notes version 1 POC
+
+Version 1.1:
+I have been able to get an enemy moving around which can detect through sight when it sees the player.
+Player can move around by clicking with the mouse
+
+I still need to get the shooting mechanic to work.
+I have the weapon system set up through the strategy pattern and will work once the projectile mechanic works.
+
+I am much further behind at this point than I was expecting.

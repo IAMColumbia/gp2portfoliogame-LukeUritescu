@@ -45,5 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShotPrefab: {fileID: 5274811222722773446, guid: 6691e352093e32949a96cbf9d0ff121f,
     type: 3}
-  InitialPoolSize: 1
-  MaxPoolSize: 10
+  InitialPoolSize: 5
+  MaxPoolSize: 100

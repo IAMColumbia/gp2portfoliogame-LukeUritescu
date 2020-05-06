@@ -70,7 +70,7 @@ public abstract class ShotSprite : MonoBehaviour
             coll.GetComponent<Caster>().TakeDamage(this.damage);
             this.State = ShotState.Done;
         }
-        if(coll.gameObject.tag == "Wall")
+        if(coll.gameObject.tag == "Obstacle")
         {
             this.State = ShotState.Done;
         }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &465992643923683723
+--- !u!1 &1063081126543482538
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4659878726503767295}
-  - component: {fileID: 552557009274874531}
+  - component: {fileID: 1063081126543482540}
+  - component: {fileID: 1063081126543482539}
   m_Layer: 0
-  m_Name: PoolIce
+  m_Name: GridManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4659878726503767295
+--- !u!4 &1063081126543482540
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465992643923683723}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 73.05993, y: 3.6243172, z: -73.296555}
+  m_GameObject: {fileID: 1063081126543482538}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 47.3, y: -0.4, z: 171.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &552557009274874531
+--- !u!114 &1063081126543482539
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465992643923683723}
+  m_GameObject: {fileID: 1063081126543482538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c21e84e59a88c0e48b9abbe74010d5a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 77dac84e7dbe77f4e9999464d2eab38a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShotPrefab: {fileID: 49366710801615976, guid: 1037c741a48c7f94780ea1a7d0c4006c,
-    type: 3}
-  InitialPoolSize: 5
-  MaxPoolSize: 100
+  numOfRows: 150
+  numOfColumns: 150
+  gridCellSize: 8
+  showGrid: 1
+  showObstacleBlocks: 1

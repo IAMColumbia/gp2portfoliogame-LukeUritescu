@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PacMan : ISubject
+public class PlayerSubject : ISubject
 {
     List<IObserver> EnemyObs;
 
@@ -11,7 +11,7 @@ public class PacMan : ISubject
         //nothing
     }
 
-    public PacMan()
+    public PlayerSubject()
     {
         this.EnemyObs = new List<IObserver>();
     }

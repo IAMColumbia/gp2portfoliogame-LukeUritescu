@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnityPacMan : PacMan
+public class UnityPlayerSubject : PlayerSubject
 {
     private GameObject _gameObject;
 
-    public UnityPacMan(GameObject g) : base()
+    public UnityPlayerSubject(GameObject g) : base()
     {
         _gameObject = g;
     }

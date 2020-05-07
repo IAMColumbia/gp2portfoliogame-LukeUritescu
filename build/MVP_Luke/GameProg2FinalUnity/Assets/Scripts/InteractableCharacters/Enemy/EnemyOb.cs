@@ -16,7 +16,7 @@ public class EnemyOb : IObserver
             }
         }
     }
-    public EnemyOb(PacMan pac)
+    public EnemyOb(PlayerSubject pac)
     {
         State = EnemyStates.Patrol;
         pac.Attach(this);
@@ -28,12 +28,12 @@ public class EnemyOb : IObserver
 
     }
 
-    public void Attach(PacMan pac)
+    public void Attach(PlayerSubject pac)
     {
         pac.Attach(this);
     }
 
-    public void Detach(PacMan pac)
+    public void Detach(PlayerSubject pac)
     {
         pac.Detach(this);
     }
@@ -41,7 +41,7 @@ public class EnemyOb : IObserver
     //From IObservable messages from PacMan
     public void ObserverUpdate(object sender, object message)
     {
-        if (sender is PacMan)
+        if (sender is PlayerSubject)
         {
             
         }

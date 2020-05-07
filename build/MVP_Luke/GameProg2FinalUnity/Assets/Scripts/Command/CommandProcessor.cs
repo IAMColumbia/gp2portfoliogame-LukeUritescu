@@ -70,6 +70,12 @@ public class CommandProcessor : MonoBehaviour
                     case "CastIceBolt":
                         command = new IceBoltCommand();
                         break;
+                    case "RestartGame":
+                        command = new RestartGameCommand();
+                        break;
+                    case "ExitGame":
+                        command = new ExitGameCommand();
+                        break;
                     
                 }
                 if(command != null)

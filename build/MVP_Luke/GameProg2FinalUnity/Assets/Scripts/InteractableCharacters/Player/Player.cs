@@ -5,12 +5,13 @@ using System.Linq.Expressions;
 using UnityCommand;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : Caster, ICommandComponent
 {
     private Vector3 rayDirection;
 
-    public UnityPacMan PacMan { get; private set; }
+    public UnityPlayerSubject UnityPlayerSub { get; private set; }
 
     public int HitDistance = 15;
 
@@ -27,10 +28,10 @@ public class Player : Caster, ICommandComponent
     public List<Node> pathArray;
 
     private float elapsedTime = 0.0f;
-    public float intervalTime = 1.0f; //Interval time between path finding
+    public float intervalTime = 5.0f; //Interval time between path finding
 
 
-    public enum PlayerStates { NoAction, Moving, AStar, OnlyAiming, Attack }
+    public enum PlayerStates { NoAction, Moving, AStar, OnlyAiming, Attack}
 
     //public SpellSpawner SpellSpawnerReference;
 
@@ -42,23 +43,19 @@ public class Player : Caster, ICommandComponent
     //public GameObject Projectile;
     [SerializeField]
     public PlayerStates PlayerState;
-    private int viewDistance = 10;
     public Transform TargetTransform;
 
     [SerializeField]
     private float rotationSpeed = 15f;
 
-    private bool lip;
-
     void Awake()
     {
-        PacMan = new UnityPacMan(this.gameObject);
+        UnityPlayerSub = new UnityPlayerSubject(this.gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        lip = true;
         MaxHP = 100f;
         CurrentHP = MaxHP;
         MaxManaPool = 700f;
@@ -73,9 +70,30 @@ public class Player : Caster, ICommandComponent
         pathArray = new List<Node>();
     }
 
+    public void PassiveManaRestore()
+    {
+        if(elapsedTime >= intervalTime)
+        {
+            this.CurrentManaPool += 4f;
+            this.manaBar.RestoreMana(4);
+            elapsedTime = 0f;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+        PassiveManaRestore();
+        if (this.CurrentManaPool <= this.MaxManaPool)
+        {
+            this.CurrentManaPool += 2; //Regeneration
+            //this.manaBar.RestoreMana(2);
+        }
+        if(this.CurrentManaPool > this.MaxManaPool)
+        {
+            this.CurrentManaPool = this.MaxManaPool;
+        }
         Debug.DrawLine(this.transform.position, (transform.position + (transform.forward * HitDistance)), Color.red);
         switch (PlayerState)
         {
@@ -110,6 +128,7 @@ public class Player : Caster, ICommandComponent
         }
 
         this.transform.position = new Vector3(this.transform.position.x, 1, this.transform.position.z);
+        PlayerDead();
     }
 
     public bool DetectObstacle()
@@ -181,8 +200,7 @@ public class Player : Caster, ICommandComponent
             return;
 
         Quaternion tarRotation = Quaternion.LookRotation(dirRot);
-
-
+        tarRotation.eulerAngles = new Vector3(0, tarRotation.eulerAngles.y, 0);
         transform.rotation = Quaternion.Slerp(transform.rotation, tarRotation, rotationSpeed * Time.deltaTime);
 
         transform.Translate(new Vector3(0, 0, movementSpeed * Time.deltaTime));
@@ -199,14 +217,14 @@ public class Player : Caster, ICommandComponent
 
             if (Vector3.Distance(transform.position, pathArray[curPathIndex].position) < Radius)
             {
-                if (curPathIndex < pathArray.Count - 1)
+                if (curPathIndex < pathArray.Count -1)
                     curPathIndex++;
                 if (isEnd)
                     curPathIndex = 0;
                 else
                     return;
             }
-            if (curPathIndex >= pathArray.Count - 1)
+            if (curPathIndex >= pathArray.Count)
             {
 
                 isEnd = true;
@@ -218,9 +236,11 @@ public class Player : Caster, ICommandComponent
                 velocity += Steer(pathArray[curPathIndex].position, curSpeed, true);
             else
                 velocity += Steer(pathArray[curPathIndex].position, curSpeed);
-
+            Vector3 dirRot = pathArray[curPathIndex].position - transform.position;
+            Quaternion tarRotation = Quaternion.LookRotation(dirRot);
+            tarRotation.eulerAngles = new Vector3(0, tarRotation.eulerAngles.y, 0);
             transform.position += velocity;
-            transform.rotation = Quaternion.LookRotation(velocity);
+            transform.rotation = Quaternion.Slerp(transform.rotation, tarRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -314,10 +334,8 @@ public class Player : Caster, ICommandComponent
         if(manaBar != null)
         {
             manaBar.Decrease(ManaUsage);
-            MaxManaPool -= ManaUsage;
-        }
-        this.CurrentManaPool -= ManaUsage;
-        
+            this.CurrentManaPool -= ManaUsage;
+        }        
     }
 
     public override void TakeDamage(float DamageAmount)
@@ -325,7 +343,27 @@ public class Player : Caster, ICommandComponent
         if(healthBar != null)
         {
             healthBar.Damage(DamageAmount);
-            MaxHP -= DamageAmount;
+            this.CurrentHP -= DamageAmount;
         }
+    }
+
+    public void PlayerDead()
+    {
+        if(this.CurrentHP <= 0)
+        {
+            UnityPlayerSub.Notify("PlayerDead");
+        }
+    }
+
+    public void RestartGame()
+    {
+        UnityPlayerSub.Notify("RestartGame");
+        //SceneManager.LoadScene("MVPTest", LoadSceneMode.Single);
+    }
+
+    public void ExitGame()
+    {
+        UnityPlayerSub.Notify("ExitGame");
+        //Application.Quit();
     }
 }

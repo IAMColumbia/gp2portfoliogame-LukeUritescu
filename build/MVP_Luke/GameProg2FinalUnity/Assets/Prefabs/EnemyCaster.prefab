@@ -33,6 +33,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 6914287094235537525}
+  - {fileID: 2542941087649490932}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -113,7 +114,11 @@ MonoBehaviour:
   SpawnTime: 3
   MaxMovementSpeed: 5
   movementSpeed: 5
-  setMaxHP: 0
+  path: {fileID: 280804011466211472}
+  Mass: 5
+  Radius: 0.001
+  HitDistance: 15
+  setMaxHP: 30
   DistanceForTouch: 50
   rotationSpeed: 2
   PlayerReference: {fileID: 0}
@@ -196,3 +201,52 @@ MonoBehaviour:
   detectionRate: 1
   FieldOfView: 45
   ViewDistance: 20
+--- !u!1 &9176440274655906637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2542941087649490932}
+  - component: {fileID: 280804011466211472}
+  m_Layer: 0
+  m_Name: Pathing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2542941087649490932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176440274655906637}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 833987991474863854}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &280804011466211472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176440274655906637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a08c3b7220c41244ca41f69ad5bf0b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bDebug: 1
+  Radius: 2
+  pointA:
+  - {x: 106.3, y: 0, z: 300}
+  - {x: 70, y: 0, z: 300}
+  - {x: 90, y: 0, z: 330}

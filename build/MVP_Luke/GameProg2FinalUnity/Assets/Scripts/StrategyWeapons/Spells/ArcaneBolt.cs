@@ -29,7 +29,7 @@ public class ArcaneBolt : Spell
         base.SetUpWeapon();
         this.ManaUsage = 10f;
         this.damage = 10;
-        this.speed = 40f;
+        this.speed = 70f;
         this.Name = "Arcane Bolt";
     }
     public override void OnTriggerEnter(Collider coll)

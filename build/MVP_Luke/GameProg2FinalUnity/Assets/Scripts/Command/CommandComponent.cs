@@ -12,6 +12,8 @@ namespace UnityCommand
         void CastArcaneBolt();
         void CastFireBolt();
         void CastIceBolt();
+        void RestartGame();
+        void ExitGame();
 
     }
     public class CommandComponent : ICommandComponent
@@ -31,12 +33,22 @@ namespace UnityCommand
             throw new System.NotImplementedException();
         }
 
+        public void ExitGame()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Moving()
         {
             throw new System.NotImplementedException();
         }
 
         public void OnlyAim()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RestartGame()
         {
             throw new System.NotImplementedException();
         }

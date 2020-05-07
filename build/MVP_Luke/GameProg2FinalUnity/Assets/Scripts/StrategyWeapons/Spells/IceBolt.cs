@@ -27,7 +27,7 @@ public class IceBolt : Spell
         base.SetUpWeapon();
         this.ManaUsage = 5f;
         this.damage = 5;
-        this.speed = 30f;
+        this.speed = 50f;
         this.Name = "Ice Bolt";
     }
     public override void OnTriggerEnter(Collider coll)

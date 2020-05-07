@@ -20,10 +20,12 @@ namespace UnityCommand
         public virtual void Initialize()
         {
             OnKeyDownMap.Add(KeyCode.Mouse0, "Moving");
-            OnKeyDownMap.Add(KeyCode.LeftShift, "OnlyAim");
+            OnKeyDownMap.Add(KeyCode.Space, "OnlyAim");
             OnKeyDownMap.Add(KeyCode.Q, "CastArcaneBolt");
             OnKeyDownMap.Add(KeyCode.W, "CastFireBolt");
             OnKeyDownMap.Add(KeyCode.E, "CastIceBolt");
+            OnKeyDownMap.Add(KeyCode.Escape, "ExitGame");
+            OnKeyDownMap.Add(KeyCode.P, "RestartGame");
         }
 
 

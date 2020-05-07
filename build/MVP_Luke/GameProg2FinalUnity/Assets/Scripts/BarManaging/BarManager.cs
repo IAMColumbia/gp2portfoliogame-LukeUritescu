@@ -8,7 +8,7 @@ public class BarManager : MonoBehaviour
     private Image barImage;
     private float maxValue;
     private float currentValue;
-    private float minValue = 0;
+    private float minValue;
     [SerializeField]
     private float updateSpeedSeconds;
     [SerializeField]
@@ -27,6 +27,7 @@ public class BarManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        minValue = 0;
     }
 
     // Update is called once per frame
@@ -54,9 +55,9 @@ public class BarManager : MonoBehaviour
     public void DecreaseValue(float damageAmount)
     {
         currentValue -= damageAmount;
-        if (currentValue < 0)
+        if (currentValue < minValue)
         {
-            currentValue = 0;
+            currentValue = minValue;
         }
     }
 

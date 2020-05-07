@@ -27,7 +27,7 @@ public class FireBolt : Spell
         base.SetUpWeapon();
         this.ManaUsage = 15f;
         this.damage = 30;
-        this.speed = 60f;
+        this.speed = 70f;
         this.Name = "Fire Bolt";
         if(this.transform.parent == null)
         {

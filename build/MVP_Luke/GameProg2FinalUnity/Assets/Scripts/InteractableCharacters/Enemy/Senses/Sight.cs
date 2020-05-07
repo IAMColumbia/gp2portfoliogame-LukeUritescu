@@ -47,20 +47,20 @@ public class Sight : Sense
 
     private void OnDrawGizmos()
     {
-        if(!Application.isEditor || playerTransform == null)
-        {
-            return;
-        }
+    //    if(!Application.isEditor || playerTransform == null)
+    //    {
+    //        return;
+    //    }
 
-        Debug.DrawLine(transform.position, playerTransform.position, Color.red);
-        Vector3 frontRayPoint = transform.position + (transform.forward * ViewDistance);
+    //    Debug.DrawLine(transform.position, playerTransform.position, Color.red);
+    //    Vector3 frontRayPoint = transform.position + (transform.forward * ViewDistance);
 
-        Vector3 leftRayPoint = Quaternion.Euler(0, FieldOfView * 0.5f, 0) * frontRayPoint;
+    //    Vector3 leftRayPoint = Quaternion.Euler(0, FieldOfView, 0) * frontRayPoint;
 
-        Vector3 rightRayPoint = Quaternion.Euler(0, -FieldOfView * 0.5f, 0) * frontRayPoint;
+    //    Vector3 rightRayPoint = Quaternion.Euler(0, -FieldOfView, 0) * frontRayPoint;
 
-        Debug.DrawLine(transform.position, frontRayPoint, Color.green);
-        Debug.DrawLine(transform.position, leftRayPoint, Color.green);
-        Debug.DrawLine(transform.position, rightRayPoint, Color.green);
+    //    Debug.DrawLine(transform.position, frontRayPoint, Color.green);
+    //    Debug.DrawLine(transform.position, leftRayPoint, Color.green);
+    //    Debug.DrawLine(transform.position, rightRayPoint, Color.green);
     }
 }

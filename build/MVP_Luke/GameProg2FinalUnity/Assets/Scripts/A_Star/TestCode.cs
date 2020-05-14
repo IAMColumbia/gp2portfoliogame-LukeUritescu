@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class TestCode : MonoBehaviour
 {
     private Transform startPos, endPos;
-    public Node startNode { get; set; }
-    public Node goalNode { get; set; }
+    public Node StartNode { get; set; }
+    public Node GoalNode { get; set; }
 
-    public List<Node> pathArray;
+    public List<Node> PathArray;
 
-    GameObject objStartCube, objEndCube;
+    GameObject ObjStartCube, ObjEndCube;
 
     private float elapsedTime = 0.0f;
     public float intervalTime = 1.0f; //Interval time between path finding
@@ -18,11 +18,11 @@ public class TestCode : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        objStartCube = GameObject.FindGameObjectWithTag("Start");
-        objEndCube = GameObject.FindGameObjectWithTag("End");
+        ObjStartCube = GameObject.FindGameObjectWithTag("Start");
+        ObjEndCube = GameObject.FindGameObjectWithTag("End");
 
         //AStar Calculated Path
-        pathArray = new List<Node>();
+        PathArray = new List<Node>();
         FindPath();
     }
 
@@ -40,30 +40,30 @@ public class TestCode : MonoBehaviour
 
     void FindPath()
     {
-        startPos = objStartCube.transform;
-        endPos = objEndCube.transform;
+        startPos = ObjStartCube.transform;
+        endPos = ObjEndCube.transform;
 
         //Assign StartNode and Goal Node
-        startNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(startPos.position)));
-        goalNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(endPos.position)));
+        StartNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(startPos.position)));
+        GoalNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(endPos.position)));
 
-        pathArray = AStar.FindPath(startNode, goalNode);
+        PathArray = AStar.FindPath(StartNode, GoalNode);
     }
 
     void OnDrawGizmos()
     {
-        if (pathArray == null)
+        if (PathArray == null)
             return;
 
-        if (pathArray.Count > 0)
+        if (PathArray.Count > 0)
         {
             int index = 1;
-            foreach (Node node in pathArray)
+            foreach (Node node in PathArray)
             {
-                if (index < pathArray.Count)
+                if (index < PathArray.Count)
                 {
-                    Node nextNode = (Node)pathArray[index];
-                    Debug.DrawLine(node.position, nextNode.position, Color.green);
+                    Node nextNode = (Node)PathArray[index];
+                    Debug.DrawLine(node.Position, nextNode.Position, Color.green);
                     index++;
                 }
             };

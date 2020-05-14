@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class Path : MonoBehaviour
 {
-    public bool bDebug = true;
+    public bool BDebug = true;
     public float Radius = 2.0f;
-    public Vector3[] pointA;
+    public Vector3[] PointA;
 
     public float Length
     {
-        get { return pointA.Length; }
+        get { return PointA.Length; }
     }
 
     public Vector3 GetPoint(int index)
     {
-        return pointA[index];
+        return PointA[index];
     }
 
     private void OnDrawGizmos()
     {
-        if (!bDebug) return;
-        for(int i = 0; i < pointA.Length; i++)
+        if (!BDebug) return;
+        for(int i = 0; i < PointA.Length; i++)
         {
-            if(i + 1 < pointA.Length)
+            if(i + 1 < PointA.Length)
             {
-                Debug.DrawLine(pointA[i], pointA[i + 1], Color.red);
+                Debug.DrawLine(PointA[i], PointA[i + 1], Color.red);
             }
         }
     }

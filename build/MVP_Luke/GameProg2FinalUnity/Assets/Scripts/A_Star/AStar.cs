@@ -6,8 +6,8 @@ public class AStar
 {
     #region List fields
 
-    public static PriorityQueue openList;
-    public static HashSet<Node> closedList;
+    public static PriorityQueue OpenList;
+    public static HashSet<Node> ClosedList;
 
     #endregion
 
@@ -20,7 +20,7 @@ public class AStar
         while (node != null)
         {
             list.Add(node);
-            node = node.parent;
+            node = node.Parent;
         }
         list.Reverse();
         return list;
@@ -31,7 +31,7 @@ public class AStar
     /// </summary>
     private static float HeuristicEstimateCost(Node curNode, Node goalNode)
     {
-        Vector3 vecCost = curNode.position - goalNode.position;
+        Vector3 vecCost = curNode.Position - goalNode.Position;
         return vecCost.magnitude;
     }
 
@@ -41,19 +41,19 @@ public class AStar
     public static List<Node> FindPath(Node start, Node goal)
     {
         //Start Finding the path
-        openList = new PriorityQueue();
-        openList.Push(start);
-        start.nodeTotalCost = 0.0f;
-        start.estimatedCost = HeuristicEstimateCost(start, goal);
+        OpenList = new PriorityQueue();
+        OpenList.Push(start);
+        start.NodeTotalCost = 0.0f;
+        start.EstimatedCost = HeuristicEstimateCost(start, goal);
 
-        closedList = new HashSet<Node>();
+        ClosedList = new HashSet<Node>();
         Node node = null;
 
-        while (openList.Length != 0)
+        while (OpenList.Length != 0)
         {
-            node = openList.First();
+            node = OpenList.First();
 
-            if (node.position == goal.position)
+            if (node.Position == goal.Position)
             {
                 return CalculatePath(node);
             }
@@ -69,38 +69,38 @@ public class AStar
                 //Cost between neighbour nodes
                 Node neighbourNode = (Node)neighbours[i];
 
-                if (!closedList.Contains(neighbourNode))
+                if (!ClosedList.Contains(neighbourNode))
                 {
                     //Cost from current node to this neighbour node
                     float cost = HeuristicEstimateCost(node, neighbourNode);
 
                     //Total Cost So Far from start to this neighbour node
-                    float totalCost = node.nodeTotalCost + cost;
+                    float totalCost = node.NodeTotalCost + cost;
 
                     //Estimated cost for neighbour node to the goal
                     float neighbourNodeEstCost = HeuristicEstimateCost(neighbourNode, goal);
 
                     //Assign neighbour node properties
-                    neighbourNode.nodeTotalCost = totalCost;
-                    neighbourNode.parent = node;
-                    neighbourNode.estimatedCost = totalCost + neighbourNodeEstCost;
+                    neighbourNode.NodeTotalCost = totalCost;
+                    neighbourNode.Parent = node;
+                    neighbourNode.EstimatedCost = totalCost + neighbourNodeEstCost;
 
                     //Add the neighbour node to the list if not already existed in the list
-                    if (!openList.Contains(neighbourNode))
+                    if (!OpenList.Contains(neighbourNode))
                     {
-                        openList.Push(neighbourNode);
+                        OpenList.Push(neighbourNode);
                     }
                 }
             }
 
             #endregion
 
-            closedList.Add(node);
-            openList.Remove(node);
+            ClosedList.Add(node);
+            OpenList.Remove(node);
         }
 
         //If finished looping and cannot find the goal then return null
-        if (node.position != goal.position)
+        if (node.Position != goal.Position)
         {
             Debug.LogError("Goal Not Found");
             return null;

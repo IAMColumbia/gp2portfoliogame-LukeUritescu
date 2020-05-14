@@ -13,16 +13,17 @@ public class Enemy : Caster
     private Vector3 velocity;
     public float Radius = 0.001f;
     private int curPathIndex;
+    private int aStarPathIndex;
     private bool isEnd;
-    public bool isLooping = true;
+    public bool IsLooping = true;
 
     public int HitDistance = 15;
     private Transform startPos, endPos;
-    public Node startNode { get; set; }
-    public Node goalNode { get; set; }
+    public Node StartNode { get; set; }
+    public Node GoalNode { get; set; }
     public float DistanceToStartShooting;
 
-    public List<Node> pathArray;
+    public List<Node> PathArray;
 
     public UnityEnemySubject UnityEnemySub { get; private set; }
 
@@ -43,8 +44,8 @@ public class Enemy : Caster
     public Sight ReferenceToSight;
 
 
-
-    EnemyStates enemyState;
+    [SerializeField]
+    protected EnemyStates enemyState;
 
 
     private void Awake()
@@ -56,10 +57,11 @@ public class Enemy : Caster
     // Start is called before the first frame update
     void Start()
     {
+        aStarPathIndex = 0;
         velocity = transform.forward;
 
         isEnd = false;
-        pathArray = new List<Node>();
+        PathArray = new List<Node>();
 
         this.OwnerOfShot = PlayerOrEnemyShot.Enemy;
         lastSpawnTime = SpawnTime;
@@ -76,9 +78,9 @@ public class Enemy : Caster
     {
         //Debug.DrawLine(this.transform.position, (transform.position + (transform.forward * HitDistance)), Color.red);
 
-        if (this.ReferenceToSight.DetectAspect())
-            this.enemyState = EnemyStates.Attack;
-        if((this.ReferenceToSight.DetectAspect() == false) && Vector3.Distance(this.transform.position, PlayerReference.transform.position) <= DistanceForTouch)
+        //if (this.ReferenceToSight.DetectAspect())
+        //    this.enemyState = EnemyStates.Attack;
+        if((this.ReferenceToSight.DetectAspect() == false) && Vector3.Distance(this.transform.position, PlayerReference.transform.position) >= DistanceForTouch)
         {
             this.enemyState = EnemyStates.Patrol;
         }
@@ -150,40 +152,44 @@ public class Enemy : Caster
     {
         startPos = this.transform;
         endPos = PlayerReference.transform;
-        startNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(startPos.position)));
-        goalNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(endPos.position)));
-        pathArray = AStar.FindPath(startNode, goalNode);
-        curPathIndex = 0;
+        StartNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(startPos.position)));
+        GoalNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(endPos.position)));
+        PathArray = AStar.FindPath(StartNode, GoalNode);
+        aStarPathIndex = 0;
     }
 
     public void AStarPathing()
     {
-        float curSpeed = movementSpeed * Time.deltaTime;
-        Vector3 tarPos = pathArray[curPathIndex].position;
-        if(pathArray.Count > 0)
+        if(PathArray.Count > 0)
         {
-            if(Vector3.Distance(transform.position, pathArray[curPathIndex].position) < Radius)
+        float curSpeed = movementSpeed * Time.deltaTime;
+        Vector3 tarPos = PathArray[aStarPathIndex].Position;
+            Debug.Log(aStarPathIndex);
+            Debug.Log(PathArray.Count);
+            if(Vector3.Distance(transform.position, PathArray[aStarPathIndex].Position) < Radius)
             {
-                if (curPathIndex < pathArray.Count)
-                    curPathIndex++;
+                if (aStarPathIndex < PathArray.Count-1)
+                    aStarPathIndex++;
                 if (isEnd)
-                    curPathIndex = 0;
-                else
-                    return;
+                {
+                    aStarPathIndex = 0;
+                    isEnd = false;
+                }
             }
-            if(curPathIndex >= pathArray.Count - 1)
-            {
+            if(aStarPathIndex >= PathArray.Count-1)
+             {
+                FindPath();
                 isEnd = true;
                 return;
             }
 
-            if (curPathIndex >= pathArray.Count - 1 && !isEnd)
-                velocity += Steer(pathArray[curPathIndex].position, curSpeed, true);
+            if (aStarPathIndex >= PathArray.Count - 1 && !isEnd)
+                velocity += Steer(PathArray[aStarPathIndex].Position, curSpeed, true);
             else
-                velocity += Steer(pathArray[curPathIndex].position, curSpeed);
+                velocity += Steer(PathArray[aStarPathIndex].Position, curSpeed);
 
             //transform.rotation = Quaternion.LookRotation(velocity);
-            Vector3 dirRot = pathArray[curPathIndex].position - transform.position;
+            Vector3 dirRot = PathArray[aStarPathIndex].Position - transform.position;
             Quaternion tarRotation = Quaternion.LookRotation(dirRot);
             tarRotation.eulerAngles = new Vector3(0, tarRotation.eulerAngles.y, 0);
             
@@ -215,6 +221,7 @@ public class Enemy : Caster
     {
         if (DetectObstacle("Player"))
         {
+            FindPath();
             this.enemyState = EnemyStates.Chase;
             return;
         }
@@ -226,7 +233,7 @@ public class Enemy : Caster
             {
                 curPathIndex++;
             }
-            else if (isLooping)
+            else if (IsLooping)
                 curPathIndex = 0;
             else
                 return;
@@ -234,7 +241,7 @@ public class Enemy : Caster
 
         if (curPathIndex >= path.Length)
             return;
-        if (curPathIndex >= path.Length - 1 && !isLooping)
+        if (curPathIndex >= path.Length - 1 && !IsLooping)
             velocity += Steer(targetPoint, curSpeed, true);
         else
             velocity += Steer(targetPoint, curSpeed);
@@ -251,8 +258,10 @@ public class Enemy : Caster
 
     public void Chasing()
     {
-            if(Vector3.Distance(PlayerReference.transform.position, this.transform.position) <= DistanceToStartShooting)
+        if (Vector3.Distance(PlayerReference.transform.position, this.transform.position) <= DistanceToStartShooting)
+        {
             this.enemyState = EnemyStates.Attack;
+        }
         else
         {
             this.AStarPathing();
@@ -266,14 +275,16 @@ public class Enemy : Caster
         this.transform.rotation = Quaternion.Slerp(transform.rotation, tarRotation, rotationSpeed * Time.deltaTime);
         if((lastSpawnTime > SpawnTime))
         {
-            this.GetComponent<FireBoltSpawner>().SpawnTheObject();
+            this.GetComponent<FireBoltSpawner>().SpawnTheObject(this.gameObject);
             lastSpawnTime = 0f;
+            this.enemyState = EnemyStates.Chase;
         }
     }
 
     public override void TakeDamage(float DamageAmount)
     {
         this.CurrentHP -= DamageAmount;
+        this.enemyState = EnemyStates.Chase;
     }
 
     public override void SetUpCharacterStats()

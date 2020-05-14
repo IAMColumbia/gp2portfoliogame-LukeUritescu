@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Attacker : MonoBehaviour, IDamageable
 {
-
+    public bool ChillCheck;
     public float TimerForConditionsToMeet;
     protected float timerToMeetConditionLength;
     protected float tickForDamageOverTime;
@@ -43,12 +43,15 @@ public abstract class Attacker : MonoBehaviour, IDamageable
         {
             this.UserCondition = Conditions.NoCondition;
             this.timerToMeetConditionLength = 0f;
+            this.ChillCheck = false;
+            this.movementSpeed = this.MaxMovementSpeed;
         }
-        if (tickForDamageOverTime >= DamageOverTimeTimer)
+        if(!ChillCheck)
         {
-            this.movementSpeed /= 2f;
-            tickForDamageOverTime = 0f;
+            this.ChillCheck = true;
+            this.movementSpeed /= 4f;
         }
+        
     }
 
     public virtual void TakeDamage(float DamageAmount)
@@ -74,6 +77,7 @@ public abstract class Attacker : MonoBehaviour, IDamageable
         timerToMeetConditionLength = 0f;
         tickForDamageOverTime = 0f;
         DamageOverTimeTimer = 3f;
+        this.ChillCheck = false;
     }
 
     // Update is called once per frame

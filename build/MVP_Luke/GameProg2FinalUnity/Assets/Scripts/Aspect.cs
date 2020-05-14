@@ -9,5 +9,5 @@ public class Aspect : MonoBehaviour
         Player, Enemy
     }
 
-    public aspect aspectName;
+    public aspect AspectName;
 }

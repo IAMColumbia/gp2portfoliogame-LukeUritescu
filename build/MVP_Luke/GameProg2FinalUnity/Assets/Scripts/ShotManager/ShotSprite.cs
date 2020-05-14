@@ -8,7 +8,6 @@ public abstract class ShotSprite : MonoBehaviour
 {
 
     private Vector3 moveTranslation;
-    public SpriteRenderer spriteRenderer;
     protected float damage { get; set; }
     protected Vector3 direction { get; set; }
     protected float speed { get; set; }
@@ -62,12 +61,12 @@ public abstract class ShotSprite : MonoBehaviour
     {
         if (coll.gameObject.tag == "Player" && OwnerOfShot == PlayerOrEnemyShot.Enemy)
         {
-            coll.GetComponent<Caster>().TakeDamage(this.damage);
+            coll.GetComponent<Attacker>().TakeDamage(this.damage);
             this.State = ShotState.Done;
         }
         if (coll.gameObject.tag == "Enemy" && OwnerOfShot == PlayerOrEnemyShot.Player)
         {
-            coll.GetComponent<Caster>().TakeDamage(this.damage);
+            coll.GetComponent<Attacker>().TakeDamage(this.damage);
             this.State = ShotState.Done;
         }
         if(coll.gameObject.tag == "Obstacle")

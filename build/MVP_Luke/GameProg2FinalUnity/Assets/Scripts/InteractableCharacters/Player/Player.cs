@@ -22,13 +22,13 @@ public class Player : Caster, ICommandComponent
     private bool isEnd;
 
     private Transform startPos, endPos;
-    public Node startNode { get; set; }
-    public Node goalNode { get; set; }
+    public Node StartNode { get; set; }
+    public Node GoalNode { get; set; }
 
-    public List<Node> pathArray;
+    public List<Node> PathArray;
 
     private float elapsedTime = 0.0f;
-    public float intervalTime = 5.0f; //Interval time between path finding
+    public float IntervalTime = 5.0f; //Interval time between path finding
 
 
     public enum PlayerStates { NoAction, Moving, AStar, OnlyAiming, Attack}
@@ -56,23 +56,24 @@ public class Player : Caster, ICommandComponent
     // Start is called before the first frame update
     void Start()
     {
-        MaxHP = 100f;
+        MaxHP = 150f;
         CurrentHP = MaxHP;
-        MaxManaPool = 700f;
+        MaxManaPool = 200f;
         CurrentManaPool = MaxManaPool;
         PlayerState = PlayerStates.NoAction;
         OwnerOfShot = PlayerOrEnemyShot.Player;
+        this.UserCondition = Conditions.NoCondition;
 
         velocity = transform.forward;
 
         isEnd = false;
         //AStar Calculated Path
-        pathArray = new List<Node>();
+        PathArray = new List<Node>();
     }
 
     public void PassiveManaRestore()
     {
-        if(elapsedTime >= intervalTime)
+        if(elapsedTime >= IntervalTime)
         {
             this.CurrentManaPool += 4f;
             this.manaBar.RestoreMana(4);
@@ -84,11 +85,10 @@ public class Player : Caster, ICommandComponent
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        PassiveManaRestore();
         if (this.CurrentManaPool <= this.MaxManaPool)
         {
-            this.CurrentManaPool += 2; //Regeneration
-            //this.manaBar.RestoreMana(2);
+            PassiveManaRestore();
+
         }
         if(this.CurrentManaPool > this.MaxManaPool)
         {
@@ -158,27 +158,27 @@ public class Player : Caster, ICommandComponent
         endPos = TargetTransform;
 
         //Assign StartNode and Goal Node
-        startNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(startPos.position)));
-        goalNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(endPos.position)));
-        pathArray = AStar.FindPath(startNode, goalNode);
+        StartNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(startPos.position)));
+        GoalNode = new Node(GridManager.instance.GetGridCellCenter(GridManager.instance.GetGridIndex(endPos.position)));
+        PathArray = AStar.FindPath(StartNode, GoalNode);
         curPathIndex = 0;
 
     }
 
     void OnDrawGizmos()
     {
-        if (pathArray == null)
+        if (PathArray == null)
             return;
 
-        if (pathArray.Count > 0)
+        if (PathArray.Count > 0)
         {
             int index = 1;
-            foreach (Node node in pathArray)
+            foreach (Node node in PathArray)
             {
-                if (index < pathArray.Count)
+                if (index < PathArray.Count)
                 {
-                    Node nextNode = (Node)pathArray[index];
-                    Debug.DrawLine(node.position, nextNode.position, Color.green);
+                    Node nextNode = (Node)PathArray[index];
+                    Debug.DrawLine(node.Position, nextNode.Position, Color.green);
                     index++;
                 }
             };
@@ -188,6 +188,7 @@ public class Player : Caster, ICommandComponent
     {
         if (DetectObstacle())
         {
+            FindPath();
             this.PlayerState = PlayerStates.AStar;
             return;
         }
@@ -210,21 +211,22 @@ public class Player : Caster, ICommandComponent
     public void AStarPathing()
     {
         float curSpeed = movementSpeed * Time.deltaTime;
-        Vector3 tarPos = pathArray[curPathIndex].position;
+        Vector3 tarPos = PathArray[curPathIndex].Position;
+
         //tarPos.y = 0.5f;
-        if (pathArray.Count > 0)
+        if (PathArray.Count > 0)
         {
 
-            if (Vector3.Distance(transform.position, pathArray[curPathIndex].position) < Radius)
+            if (Vector3.Distance(transform.position, PathArray[curPathIndex].Position) < Radius)
             {
-                if (curPathIndex < pathArray.Count -1)
+                if (curPathIndex < PathArray.Count -1)
                     curPathIndex++;
                 if (isEnd)
                     curPathIndex = 0;
                 else
                     return;
             }
-            if (curPathIndex >= pathArray.Count)
+            if (curPathIndex >= PathArray.Count)
             {
 
                 isEnd = true;
@@ -232,11 +234,11 @@ public class Player : Caster, ICommandComponent
             }
 
 
-            if (curPathIndex >= pathArray.Count - 1 && !isEnd)
-                velocity += Steer(pathArray[curPathIndex].position, curSpeed, true);
+            if (curPathIndex >= PathArray.Count - 1 && !isEnd)
+                velocity += Steer(PathArray[curPathIndex].Position, curSpeed, true);
             else
-                velocity += Steer(pathArray[curPathIndex].position, curSpeed);
-            Vector3 dirRot = pathArray[curPathIndex].position - transform.position;
+                velocity += Steer(PathArray[curPathIndex].Position, curSpeed);
+            Vector3 dirRot = PathArray[curPathIndex].Position - transform.position;
             Quaternion tarRotation = Quaternion.LookRotation(dirRot);
             tarRotation.eulerAngles = new Vector3(0, tarRotation.eulerAngles.y, 0);
             transform.position += velocity;
@@ -278,7 +280,7 @@ public class Player : Caster, ICommandComponent
     public void Moving()
     {
         FindPath();
-        if (DetectObstacle() && pathArray.Count > 0 && TargetTransform.GetComponent<Target>().TagIfObstacle == false)
+        if (DetectObstacle() && PathArray.Count > 0 && TargetTransform.GetComponent<Target>().TagIfObstacle == false)
         {
             this.PlayerState = PlayerStates.AStar;
         }
@@ -286,7 +288,7 @@ public class Player : Caster, ICommandComponent
         {
             this.PlayerState = PlayerStates.Moving;
         }
-            isEnd = false;
+        isEnd = false;
     }
 
     public void OnlyAim()
@@ -297,9 +299,9 @@ public class Player : Caster, ICommandComponent
     public void CastArcaneBolt()
     {
         this.PlayerState = PlayerStates.Attack;
-        if(CurrentManaPool >= 10f)
+        if(CurrentManaPool >= 8f)
         {
-        this.GetComponent<ArcaneBoltSpawner>().SpawnTheObject();
+        this.GetComponent<ArcaneBoltSpawner>().SpawnTheObject(this.gameObject);
         CastSpell(8f);
 
         }
@@ -312,7 +314,7 @@ public class Player : Caster, ICommandComponent
         if(CurrentManaPool >= 15f)
         {
 
-        this.GetComponent<FireBoltSpawner>().SpawnTheObject();
+        this.GetComponent<FireBoltSpawner>().SpawnTheObject(this.gameObject);
         CastSpell(15f);
         }
     }
@@ -323,7 +325,7 @@ public class Player : Caster, ICommandComponent
         if(CurrentManaPool >= 5f)
         {
 
-        this.GetComponent<IceBoltSpawner>().SpawnTheObject();
+        this.GetComponent<IceBoltSpawner>().SpawnTheObject(this.gameObject);
         CastSpell(5f);
         }
     }
@@ -358,12 +360,10 @@ public class Player : Caster, ICommandComponent
     public void RestartGame()
     {
         UnityPlayerSub.Notify("RestartGame");
-        //SceneManager.LoadScene("MVPTest", LoadSceneMode.Single);
     }
 
     public void ExitGame()
     {
         UnityPlayerSub.Notify("ExitGame");
-        //Application.Quit();
     }
 }

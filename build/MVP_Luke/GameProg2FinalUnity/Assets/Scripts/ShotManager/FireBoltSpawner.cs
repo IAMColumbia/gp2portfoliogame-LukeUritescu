@@ -11,8 +11,8 @@ public class FireBoltSpawner : SpellSpawner
         base.removeObjectInListToRemove();
     }
 
-    public void SpawnTheObject()
+    public void SpawnTheObject(GameObject caster)
     {
-        this.Spawn();
+        this.Spawn(caster);
     }
 }

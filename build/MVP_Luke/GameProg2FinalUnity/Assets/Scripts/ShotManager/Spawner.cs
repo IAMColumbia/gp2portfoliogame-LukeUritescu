@@ -27,14 +27,14 @@ public class Spawner : MonoBehaviour, ISpawner
     {
         removeObjectInListToRemove();
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            if(SpawnObject != null)
-            {
-                Debug.Log("Work");
-                Spawn();
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    if(SpawnObject != null)
+        //    {
+        //        Debug.Log("Work");
+        //        Spawn();
+        //    }
+        //}
     }
 
     protected virtual void removeObjectInListToRemove()
@@ -42,7 +42,8 @@ public class Spawner : MonoBehaviour, ISpawner
         foreach(GameObject go in this.objectsToRemove)
         {
             this.gameObjects.Remove(go);
-            Object.Destroy(go);
+            go.SetActive(false);
+            //Object.Destroy(go);
         }
         this.objectsToRemove.Clear();
     }
@@ -51,9 +52,21 @@ public class Spawner : MonoBehaviour, ISpawner
         if (SpawnerEnabled)
         {
             GameObject spawn = this.getSpawnObject();
+            if (spawn != null)
+            {
+                this.AddGameObject(spawn);
+            }
+        }
+    }
+
+    public void Spawn(GameObject caster)
+    {
+        if (SpawnerEnabled)
+        {
+            GameObject spawn = this.getSpawnObject();
             if(spawn != null)
             {
-                SetupSpawnObject(spawn);
+                SetupSpawnObject(spawn, caster);
                 this.AddGameObject(spawn);
             }
         }
@@ -74,6 +87,11 @@ public class Spawner : MonoBehaviour, ISpawner
     public virtual void SetupSpawnObject(GameObject go)
     {
           go.transform.parent = this.gameObject.transform;
+    }
+
+    public virtual void SetupSpawnObject(GameObject go, GameObject caster)
+    {
+        go.transform.position = caster.transform.position;
     }
 
 

@@ -73,7 +73,6 @@ public class ObjectPool
             //Don't destroy on load, so
             //we can manage centrally.
             GameObject.DontDestroyOnLoad(go);
-
             this.emptyPoolMode = emptyPoolMode;
         }
 
@@ -111,6 +110,7 @@ public class ObjectPool
                 //return the object we found.
                 return pooledObjects[i];
             }
+            
         }
         //if we make it this far, we obviously didn't find an inactive object.
         //so we need to see if we can grow beyond our current count.

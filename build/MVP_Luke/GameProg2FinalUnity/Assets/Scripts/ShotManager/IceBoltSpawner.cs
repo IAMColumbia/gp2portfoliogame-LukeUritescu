@@ -11,8 +11,8 @@ public class IceBoltSpawner : SpellSpawner
         base.removeObjectInListToRemove();
     }
 
-    public void SpawnTheObject()
+    public void SpawnTheObject(GameObject go)
     {
-        this.Spawn();
+        this.Spawn(go);
     }
 }

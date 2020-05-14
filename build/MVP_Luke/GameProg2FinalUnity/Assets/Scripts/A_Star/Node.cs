@@ -5,11 +5,11 @@ using System;
 public class Node : IComparable
 {
     #region Fields
-    public float nodeTotalCost;         //Total cost so far for the node
-    public float estimatedCost;         //Estimated cost from this node to the goal node
-    public bool bObstacle;              //Does the node is an obstacle or not
-    public Node parent;                 //Parent of the node in the linked list
-    public Vector3 position;            //Position of the node
+    public float NodeTotalCost;         //Total cost so far for the node
+    public float EstimatedCost;         //Estimated cost from this node to the goal node
+    public bool BObstacle;              //Does the node is an obstacle or not
+    public Node Parent;                 //Parent of the node in the linked list
+    public Vector3 Position;            //Position of the node
     #endregion
 
     /// <summary>
@@ -17,10 +17,10 @@ public class Node : IComparable
     /// </summary>
     public Node()
     {
-        this.estimatedCost = 0.0f;
-        this.nodeTotalCost = 1.0f;
-        this.bObstacle = false;
-        this.parent = null;
+        this.EstimatedCost = 0.0f;
+        this.NodeTotalCost = 1.0f;
+        this.BObstacle = false;
+        this.Parent = null;
     }
 
     /// <summary>
@@ -28,12 +28,12 @@ public class Node : IComparable
     /// </summary>
     public Node(Vector3 pos)
     {
-        this.estimatedCost = 0.0f;
-        this.nodeTotalCost = 1.0f;
-        this.bObstacle = false;
-        this.parent = null;
+        this.EstimatedCost = 0.0f;
+        this.NodeTotalCost = 1.0f;
+        this.BObstacle = false;
+        this.Parent = null;
 
-        this.position = pos;
+        this.Position = pos;
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public class Node : IComparable
     /// </summary>
     public void MarkAsObstacle()
     {
-        this.bObstacle = true;
+        this.BObstacle = true;
     }
 
     /// <summary>
@@ -52,9 +52,9 @@ public class Node : IComparable
     public int CompareTo(object obj)
     {
         Node node = (Node)obj;
-        if (this.estimatedCost < node.estimatedCost)
+        if (this.EstimatedCost < node.EstimatedCost)
             return -1;
-        if (this.estimatedCost > node.estimatedCost)
+        if (this.EstimatedCost > node.EstimatedCost)
             return 1;
 
         return 0;

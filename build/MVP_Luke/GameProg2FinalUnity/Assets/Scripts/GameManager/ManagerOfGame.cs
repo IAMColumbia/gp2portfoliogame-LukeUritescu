@@ -66,7 +66,7 @@ public class ManagerOfGame : MonoBehaviour
     }
 
     private void RestartGame()
-    {
+    {       
         SceneManager.LoadScene("MVPTest", LoadSceneMode.Single);
     }
 

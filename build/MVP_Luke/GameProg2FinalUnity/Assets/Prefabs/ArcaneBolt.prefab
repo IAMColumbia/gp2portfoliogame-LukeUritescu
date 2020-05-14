@@ -126,3 +126,5 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   OwnerOfShot: 0
   State: 0
+  PoolArcane: {fileID: 9001454212622461382, guid: 8c9172fc166dd8f459e5b77295a68997,
+    type: 3}

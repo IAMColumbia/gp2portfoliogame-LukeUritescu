@@ -9,8 +9,12 @@ public class Pool : MonoBehaviour
     public int InitialPoolSize = 1;
     public int MaxPoolSize = 5;
 
-    void Start()
+    private void Awake()
     {
+    }
+
+    void Start()
+    {       
         CreateObjectPools();
     }
 

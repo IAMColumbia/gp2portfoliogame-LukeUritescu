@@ -187,7 +187,7 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void GetNeighbours(Node node, List<Node> neighbors)
     {
-        Vector3 neighborPos = node.position;
+        Vector3 neighborPos = node.Position;
         int neighborIndex = GetGridIndex(neighborPos);
 
         int row = GetRow(neighborIndex);
@@ -231,7 +231,7 @@ public class GridManager : MonoBehaviour
         if (row != -1 && column != -1 && row < numOfRows && column < numOfColumns)
         {
             Node nodeToAdd = nodes[row, column];
-            if (!nodeToAdd.bObstacle)
+            if (!nodeToAdd.BObstacle)
             {
                 neighbors.Add(nodeToAdd);
             }
@@ -255,7 +255,7 @@ public class GridManager : MonoBehaviour
         //Draw Obstacle obstruction
         if (showObstacleBlocks)
         {
-            Vector3 cellSize = new Vector3(gridCellSize, 1.0f, gridCellSize);
+            Vector3 cellSize = new Vector3(gridCellSize, 2.0f, gridCellSize);
 
             if (obstacleList != null && obstacleList.Length > 0)
             {

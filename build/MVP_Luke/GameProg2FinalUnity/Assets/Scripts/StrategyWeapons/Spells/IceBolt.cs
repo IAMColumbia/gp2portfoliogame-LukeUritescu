@@ -33,13 +33,13 @@ public class IceBolt : Spell
     public override void OnTriggerEnter(Collider coll)
     {
         base.OnTriggerEnter(coll);
-        if (coll.GetComponent<Caster>() && coll.gameObject.tag == "Enemy" && OwnerOfShot == PlayerOrEnemyShot.Player)
+        if (coll.GetComponent<Attacker>() && coll.gameObject.tag == "Enemy" && OwnerOfShot == PlayerOrEnemyShot.Player)
         {
-            coll.GetComponent<Caster>().UserCondition = Conditions.Chilled;
+            coll.GetComponent<Attacker>().UserCondition = Conditions.Chilled;
         }
-        if (coll.GetComponent<Caster>() && coll.gameObject.tag == "Player" && OwnerOfShot == PlayerOrEnemyShot.Enemy)
+        if (coll.GetComponent<Attacker>() && coll.gameObject.tag == "Player" && OwnerOfShot == PlayerOrEnemyShot.Enemy)
         {
-            coll.GetComponent<Caster>().UserCondition = Conditions.Chilled;
+            coll.GetComponent<Attacker>().UserCondition = Conditions.Chilled;
         }
     }
 }

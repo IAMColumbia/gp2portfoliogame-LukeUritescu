@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ArcaneBolt : Spell
 {
+    public GameObject PoolArcane;
 
     void Update()
     {
@@ -14,8 +15,8 @@ public class ArcaneBolt : Spell
             case ShotState.Start:
                 break;
             case ShotState.Shooting:
-                if (this.transform.parent != null)
-                    this.transform.parent = null;
+                //if (this.transform.parent != null)
+                //    this.transform.parent = null;
                 this.transform.position += direction * speed * Time.deltaTime;
                 break;
             case ShotState.Done:

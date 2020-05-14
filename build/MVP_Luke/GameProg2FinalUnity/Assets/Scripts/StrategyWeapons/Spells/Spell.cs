@@ -23,9 +23,15 @@ public abstract class Spell : ShotSprite, ISpell
 
     public virtual void SetUpWeapon()
     {
-        this.direction = this.GetComponentInParent<Caster>().transform.forward;
-        this.OwnerOfShot = this.GetComponentInParent<Caster>().OwnerOfShot;
         this.State = ShotState.Shooting;
+    }
+
+    public virtual void SetUpWeapon(GameObject go)
+    {
+        this.direction = go.GetComponent<Caster>().transform.forward;
+        this.OwnerOfShot = go.GetComponent<Caster>().OwnerOfShot;
+        this.State = ShotState.Shooting;
+        
     }
 
     public void Use(Transform user)

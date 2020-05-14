@@ -14,8 +14,8 @@ public class ArcaneBoltSpawner : SpellSpawner
 
 
 
-    public void SpawnTheObject()
+    public void SpawnTheObject(GameObject go)
     {
-        this.Spawn();
+        this.Spawn(go);
     }
 }

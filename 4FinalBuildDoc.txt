@@ -1,0 +1,22 @@
+GameProgramming2 Final
+ Game Programming 2 Final Template
+
+Game Name: Stay Awhile and Listen
+Description Short: The terribly drawn blobs are attacking your home village, and you are the only one capable of stopping their violence with more violence. Once you have eliminated their leader you will win!
+Description Long:
+This game will resemble a very basic version of Dungeon Crawlers similar to Diablo. 
+Controls:
+•	Point and click with the mouse to move the character
+•	Press the Q key to cast arcane bolt which only does damage
+•	Press the W key to cast Fire bolt dealing a lot of damage and burning the target
+•	Press the E key to cast Ice bolt which does little damage but slows down the target’s movement speed
+
+Genre: Dungeon Crawler
+
+Platform: PC
+
+Credits:
+Jeff Meyers 
+“Unity Artificial Intelligence Programming” by Dr. Davide Aversa, Aung Sithu Kyaw, and Clifford Peters
+“Design Patterns Elements of Reusable Object-Oriented Software” by Erich Gamma, Richard Helm, Ralph Johnson, John Slissides
+“Object Pooling – For Unity3D” by David Crooks, Link to page: https://docs.microsoft.com/en-us/archive/blogs/dave_crooks_dev_blog/object-pooling-for-unity3d

@@ -58,7 +58,7 @@ public class Player : Caster, ICommandComponent
     {
         MaxHP = 150f;
         CurrentHP = MaxHP;
-        MaxManaPool = 200f;
+        MaxManaPool = 400f;
         CurrentManaPool = MaxManaPool;
         PlayerState = PlayerStates.NoAction;
         OwnerOfShot = PlayerOrEnemyShot.Player;
@@ -75,8 +75,8 @@ public class Player : Caster, ICommandComponent
     {
         if(elapsedTime >= IntervalTime)
         {
-            this.CurrentManaPool += 4f;
-            this.manaBar.RestoreMana(4);
+            this.CurrentManaPool += 8f;
+            this.manaBar.RestoreMana(8);
             elapsedTime = 0f;
         }
     }

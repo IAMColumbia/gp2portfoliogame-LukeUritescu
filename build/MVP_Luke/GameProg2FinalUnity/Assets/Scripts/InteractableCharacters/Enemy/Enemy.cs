@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-    public enum EnemyStates { Patrol, SeenPlayer, Chase, Attack, NoAction, Dead}
+    public enum EnemyStates { Patrol, SeenPlayer, Chase, Attack, NoAction, Dead, Recovery}
 public class Enemy : Caster
 {
     public Path path;
@@ -16,6 +16,8 @@ public class Enemy : Caster
     private int aStarPathIndex;
     private bool isEnd;
     public bool IsLooping = true;
+
+    public float DistanceToDetectPlayer;
 
     public int HitDistance = 15;
     private Transform startPos, endPos;
@@ -90,6 +92,7 @@ public class Enemy : Caster
         {
             case EnemyStates.Patrol:
                 Patrolling();
+                CheckDistanceFromPlayer();
                 break;
             case EnemyStates.Chase:
                 Chasing();
@@ -127,6 +130,14 @@ public class Enemy : Caster
             }
             this.gameObject.SetActive(false);
             this.gameObject.GetComponent<SphereCollider>().enabled = false;
+        }
+    }
+
+    public void CheckDistanceFromPlayer()
+    {
+        if(Vector3.Distance(PlayerReference.transform.position, this.transform.position) <= DistanceToDetectPlayer)
+        {
+            this.enemyState = EnemyStates.Chase;
         }
     }
 

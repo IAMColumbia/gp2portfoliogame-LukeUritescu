@@ -9,6 +9,6 @@ public class ClawWeapon : MeleeWeapon
     public override void SetUpMeleeWeapon()
     {
         this.Damage = 10f;
-        this.RangeOfAttack = 5f;
+        this.RangeOfAttack = 1f;
     }
 }

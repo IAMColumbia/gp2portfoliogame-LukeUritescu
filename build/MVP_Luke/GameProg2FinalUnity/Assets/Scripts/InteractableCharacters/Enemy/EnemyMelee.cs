@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemyMelee : Attacker
 {
+    private float elapsedTime;
+    public float SetTimerForRecoveryAfterAttack = 3;
+
 
     public Path path;
+
+    public float DistanceToDetectPlayer;
+
 
     private Vector3 rayDirection;
     public float Mass = 5.0f;
@@ -55,6 +61,8 @@ public class EnemyMelee : Attacker
     // Start is called before the first frame update
     void Start()
     {
+        elapsedTime = 0;
+
         aStarPathIndex = 0;
         velocity = transform.forward;
 
@@ -98,6 +106,10 @@ public class EnemyMelee : Attacker
                 break;
             case EnemyStates.NoAction:
                 break;
+            case EnemyStates.Recovery:
+                elapsedTime += Time.deltaTime;
+                Recover();
+                break;
         }
         switch (UserCondition)
         {
@@ -125,6 +137,15 @@ public class EnemyMelee : Attacker
             }
             this.gameObject.SetActive(false);
             this.gameObject.GetComponent<SphereCollider>().enabled = false;
+        }
+    }
+
+    public void Recover()
+    {
+        if(elapsedTime>= SetTimerForRecoveryAfterAttack)
+        {
+            this.enemyState = EnemyStates.Chase;
+            elapsedTime = 0;
         }
     }
 
@@ -254,20 +275,17 @@ public class EnemyMelee : Attacker
 
     }
 
-    //public void Chasing()
-    //{
-    //    if (Vector3.Distance(PlayerReference.transform.position, this.transform.position) <= DistanceToStartShooting)
-    //    {
-    //        Attacking();
-    //    }
-    //    else
-    //    {
-    //        this.AStarPathing();
-    //    }
+    public void CheckDistanceFromPlayer()
+    {
+        if (Vector3.Distance(PlayerReference.transform.position, this.transform.position) <= DistanceToDetectPlayer)
+        {
+            this.enemyState = EnemyStates.Chase;
+        }
+    }
 
-    //}
     public void Chasing()
     {
+        Debug.Log(Vector3.Distance(PlayerReference.transform.position, transform.position));
         if (Vector3.Distance(PlayerReference.transform.position, transform.position) <= this.GetComponentInChildren<MeleeWeapon>().RangeOfAttack)
         {
             Attacking();
@@ -281,11 +299,12 @@ public class EnemyMelee : Attacker
     public void Attacking()
     {
         
-        if ((lastSpawnTime > SpawnTime))
-        {
+        //if ((lastSpawnTime > SpawnTime))
+        //{
             this.PlayerReference.GetComponent<Attacker>().TakeDamage(this.GetComponentInChildren<MeleeWeapon>().DealDamage());
             lastSpawnTime = 0f;
-        }
+            this.enemyState = EnemyStates.Recovery;
+        //}
     }
 
     public override void TakeDamage(float DamageAmount)

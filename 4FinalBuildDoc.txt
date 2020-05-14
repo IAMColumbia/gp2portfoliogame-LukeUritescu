@@ -1,4 +1,4 @@
-# GameProgramming2 Final
+GameProgramming2 Final
  Game Programming 2 Final Template
 
 Game Name: Stay Awhile and Listen
@@ -15,20 +15,8 @@ Genre: Dungeon Crawler
 
 Platform: PC
 
-Folder Sturcture
-
-\src
-
-\src\packages
-
-\assets
-
-\docs
-
-\build
-
-\build\0.1POC
-
-\build\0.2VS
-
-\build\0.3Final
+Credits:
+Jeff Meyers 
+“Unity Artificial Intelligence Programming” by Dr. Davide Aversa, Aung Sithu Kyaw, and Clifford Peters
+“Design Patterns Elements of Reusable Object-Oriented Software” by Erich Gamma, Richard Helm, Ralph Johnson, John Slissides
+“Object Pooling – For Unity3D” by David Crooks, Link to page: https://docs.microsoft.com/en-us/archive/blogs/dave_crooks_dev_blog/object-pooling-for-unity3d
